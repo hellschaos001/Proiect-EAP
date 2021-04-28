@@ -1,6 +1,15 @@
 package echipament;
 
-public class Echipament extends Producator {
+public class Echipament{
+    public Producator getProducator() {
+        return producator;
+    }
+
+    public void setProducator(Producator producator) {
+        this.producator = producator;
+    }
+
+    private Producator producator;
     private String numeEchipament;
     private int anProductie;
     private float pret;
@@ -8,8 +17,9 @@ public class Echipament extends Producator {
     public Echipament() {
     }
 
-    public Echipament(String nume_Producator, String telefon, String numeEchipament, int anProductie, float pret) {
-        super(nume_Producator, telefon);
+    public Echipament(String numeProducator, String telefon, String numeEchipament, int anProductie, float pret) {
+        this.producator.setNumeProducator(numeProducator);
+        this.producator.setTelefon(telefon);
         this.numeEchipament = numeEchipament;
         this.anProductie = anProductie;
         this.pret = pret;

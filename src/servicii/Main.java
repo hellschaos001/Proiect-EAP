@@ -41,6 +41,7 @@ public class Main {
         Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
 
 
+
         Scanner scan = new Scanner(System.in);
         int optiune=0;
         do {
@@ -54,12 +55,15 @@ public class Main {
                 Client client = Servicii.adaugareClient();
                 Clienti.put(client.getCnp(),client);
                 System.out.println("Client adaugat");
+                Servicii.audit("Adaugare client");
+                Servicii.audit("Client adaugat");
             }
             if (optiune == 2)
             {
                 //afisare clienti
                 for(Map.Entry x: Clienti.entrySet())
                     Servicii.afisareClient((Client) x.getValue());
+                Servicii.audit("Afisare clienti");
             }
             if (optiune == 3)
             {
@@ -80,6 +84,7 @@ public class Main {
                         System.out.println("Client modificat cu succes!");
                     }
                 }
+                Servicii.audit("Modificare clienti");
             }
             if (optiune == 4)
             {
@@ -97,18 +102,22 @@ public class Main {
                         System.out.println("Client sters cu succes!");
                     }
                 }
+                Servicii.audit("client sters");
             }
             if (optiune == 5)
             {
                 Servicii.statisticaCOVID(Clienti);
+                Servicii.audit("statistica covid");
             }
             if (optiune == 6)
             {
                 Servicii.afisareMedieExperienta(Medici);
+                Servicii.audit("medie experienta medici");
             }
             if (optiune == 7)
             {
                 Servicii.afisareCelMaiVechiMedic(Medici);
+                Servicii.audit("cel mai vechi medic");
             }
             if (optiune == 8)
             {
@@ -121,6 +130,7 @@ public class Main {
 
                 Programare aux = Servicii.adaugareProgramare(cnp_client,cnp_medic);
                 Programari.add(aux);
+                Servicii.audit("adaugare programare");
             }
             if(optiune == 9)
             {
@@ -128,10 +138,12 @@ public class Main {
                 {
                     Servicii.afisareProgramare(z);
                 }
+                Servicii.audit("afisare programare");
             }
             if(optiune == 10)
             {
                 System.out.println("Valoarea Medie a echipamentelor este:" + Servicii.afisareValoareaMediaEchipamente(Echipamente));
+                Servicii.audit("valoare medie a echipamentelor");
             }
 
 

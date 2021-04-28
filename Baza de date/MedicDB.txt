@@ -1,5 +1,0 @@
-1900117247631,Duta,Andrei,Str. Soarelui,0736706822,Urelist,20,14,11,7
-2990814397053,Nicoi,Alexandru,Str. Ghiocelului,0778721012,Neurolog,7,23,10,8
-1960312036521,Marin,Costel,Str. Orizontului,0702773429,Oftarmolog,10,9,3,16
-1950212299894,Vlad,Andrei,Str. Pacii,0723467649,Chinototerapeut,12,12,10,4
-1830713437915,Mario,Ghica,Str. Ion Luca Caragiale Nr.2A,0750145833,Chirurg,7,3,10,17

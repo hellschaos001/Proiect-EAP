@@ -1,4 +1,5 @@
 package servicii;
+import echipament.Producator;
 import persoana.Client;
 import echipament.Echipament;
 import persoana.Medic;
@@ -12,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;//random,scaner,arraylist,HashMap,etc.
 import java.lang.*;//math.etc
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class Servicii {
 
     //1)Adaugare Client
@@ -69,14 +72,15 @@ public class Servicii {
         return x;
     }
 
-    public static void scriereBD(HashMap<String,
-                                 Client> Clienti,
+    //Scriere din fisere
+    public static void scriereBD(HashMap<String, Client> Clienti,
                                  HashMap<String, Medic> Medici,
                                  ArrayList<Programare> Programari,
                                  ArrayList<Reteta> Retete,
                                  ArrayList<Echipament> Echipamente) throws IOException {
 
-FileWriter scriereClient = new FileWriter("Baza de date/ClientDB.txt");
+FileWriter scriereClient = new FileWriter("Baza de date/ClientDB.csv");
+scriereClient.write("cnp,nume,prenume,adresa,telefon,asigurat,rezultatTestCOVID,salariat,boli,alergeni,grupaSange"+"\n");
 for(Map.Entry x: Clienti.entrySet())
 {
 scriereClient.write(((Client) x.getValue()).getCnp()
@@ -94,7 +98,8 @@ scriereClient.write(((Client) x.getValue()).getCnp()
 scriereClient.close();
 
 
-FileWriter scriereMedic = new FileWriter("Baza de date/MedicDB.txt");
+FileWriter scriereMedic = new FileWriter("Baza de date/MedicDB.csv");
+scriereMedic.write("cnp,nume,prenume,adresa,telefon,specializare,aniExperienta,dataAngajarii\n");
 for(Map.Entry x: Medici.entrySet())
 {
 scriereMedic.write(((Medic) x.getValue()).getCnp()
@@ -110,18 +115,20 @@ scriereMedic.write(((Medic) x.getValue()).getCnp()
 }
 scriereMedic.close();
 
-FileWriter scriereEchipament = new FileWriter("Baza de date/EchipamentDB.txt");
+FileWriter scriereEchipament = new FileWriter("Baza de date/EchipamentDB.csv");
+scriereEchipament.write("numeProducator,telefon,numeEchipament,anProductie,pret\n");
 for(Echipament x:Echipamente)
 {
-scriereEchipament.write(x.getNumeProducator()
-    +","+x.getTelefon()
+scriereEchipament.write(x.getProducator().getNumeProducator()
+    +","+x.getProducator().getTelefon()
     +","+x.getNumeEchipament()
     +","+x.getAnProductie()
     +","+x.getPret()+"\n");
 }
 scriereEchipament.close();
 
-FileWriter scriereProgramare = new FileWriter("Baza de date/ProgramareDB.txt");
+FileWriter scriereProgramare = new FileWriter("Baza de date/ProgramareDB.csv");
+scriereProgramare.write("zi,luna,an,ora,minute,detaliiProgramare,recomandari,cnpClient,cnpMedic\n");
 for(Programare x:Programari)
 scriereProgramare.write(x.getData().get(Calendar.DATE) +","
     + x.getData().get(Calendar.MONTH)
@@ -134,18 +141,19 @@ scriereProgramare.write(x.getData().get(Calendar.DATE) +","
     + ","  + x.getCnpMedic()+"\n");
 scriereProgramare.close();
 
-FileWriter scriereReteta = new FileWriter("Baza de date/RetetaDB.txt");
-String str = "";
+FileWriter scriereReteta = new FileWriter("Baza de date/RetetaDB.csv");
+
+scriereReteta.write("durata,listaMedicamente(denumire;modAdministrare;prospect)\n");
 for(Reteta x:Retete) {
-HashMap<String, Medicament> lista_medicamente = x.getListaMedicamente();
-int count = 0;
+    String str = new String("");
+    HashMap<String, Medicament> lista_medicamente = x.getListaMedicamente();
 for (Map.Entry y : lista_medicamente.entrySet()) {
-    ++count;
-    str.concat(((Medicament) y.getValue()).getDenumire() + "," +
-            ((Medicament) y.getValue()).getModAdministrare() +
-            ((Medicament) y.getValue()).getProspect());
+    str+=(((Medicament) y.getValue()).getDenumire() + ";" +
+            ((Medicament) y.getValue()).getModAdministrare() + ";" +
+            ((Medicament) y.getValue()).getProspect())+ ";";
 }
-scriereReteta.write(x.getDurata() + "," + count + "," + str+"\n");
+str=str.substring(0,str.length()-1);
+scriereReteta.write(x.getDurata() + "," + str+"\n");
 }
 scriereReteta.close();
 }
@@ -157,8 +165,10 @@ scriereReteta.close();
                                  ArrayList<Echipament> Echipamente){
 
         try {
-            File fisier_client = new File("Baza de date/ClientDB.txt");
+            File fisier_client = new File("Baza de date/ClientDB.csv");
             Scanner myReader = new Scanner(fisier_client);
+            if(myReader.hasNextLine())
+                myReader.nextLine();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] arg_of_Data=data.split(",");
@@ -178,19 +188,23 @@ scriereReteta.close();
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Fisierul ClientDB.txt nu a fost gasit!!!");
+            System.out.println("Fisierul ClientDB.csv nu a fost gasit!!!");
             e.printStackTrace();
         }
 
         try {
-            File fisier_echipament = new File("Baza de date/EchipamentDB.txt");
+            File fisier_echipament = new File("Baza de date/EchipamentDB.csv");
             Scanner myReader = new Scanner(fisier_echipament);
+            if(myReader.hasNextLine())
+                myReader.nextLine();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] arg_of_Data=data.split(",");
                 Echipament echipament = new Echipament();
-                echipament.setNumeProducator(arg_of_Data[0]);
-                echipament.setTelefon(arg_of_Data[1]);
+                Producator producator = new Producator();
+                producator.setNumeProducator(arg_of_Data[0]);
+                producator.setTelefon(arg_of_Data[1]);
+                echipament.setProducator(producator);
                 echipament.setNumeEchipament(arg_of_Data[2]);
                 echipament.setAnProductie(Integer.parseInt(arg_of_Data[3]));
                 echipament.setPret(Float.parseFloat(arg_of_Data[4]));
@@ -198,13 +212,15 @@ scriereReteta.close();
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Fisierul EchipamentDB.txt nu a fost gasit!!!");
+            System.out.println("Fisierul EchipamentDB.csv nu a fost gasit!!!");
             e.printStackTrace();
         }
 
         try {
-            File fisier_medic = new File("Baza de date/MedicDB.txt");
+            File fisier_medic = new File("Baza de date/MedicDB.csv");
             Scanner myReader = new Scanner(fisier_medic);
+            if(myReader.hasNextLine())
+                myReader.nextLine();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] arg_of_Data=data.split(",");
@@ -223,13 +239,15 @@ scriereReteta.close();
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Fisierul MedicDB.txt nu a fost gasit!!!");
+            System.out.println("Fisierul MedicDB.csv nu a fost gasit!!!");
             e.printStackTrace();
         }
 
         try {
-            File fisier_programare = new File("Baza de date/ProgramareDB.txt");
+            File fisier_programare = new File("Baza de date/ProgramareDB.csv");
             Scanner myReader = new Scanner(fisier_programare);
+            if(myReader.hasNextLine())
+                myReader.nextLine();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] arg_of_Data=data.split(",");
@@ -245,45 +263,41 @@ scriereReteta.close();
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Fisierul ProgramareDB.txt nu a fost gasit!!!");
+            System.out.println("Fisierul ProgramareDB.csv nu a fost gasit!!!");
             e.printStackTrace();
         }
 
         try {
-            File fisier_reteta = new File("Baza de date/RetetaDB.txt");
+            File fisier_reteta = new File("Baza de date/RetetaDB.csv");
             Scanner myReader = new Scanner(fisier_reteta);
+            if(myReader.hasNextLine())
+                myReader.nextLine();
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] arg_of_Data=data.split(",");
                 Reteta reteta = new Reteta();
+                HashMap<String, Medicament> mapMedicamente = new HashMap<>();
                 reteta.setDurata(arg_of_Data[0]);
-                int nr=Integer.parseInt(arg_of_Data[1]);
-                int count=2;
-                for( int i=0;i<nr;++i)
+                String[] medicamente = arg_of_Data[1].split(";");
+
+                for( int i=0;i<medicamente.length/3;++i)
                 {
                     Medicament medicament = new Medicament();
-                    medicament.setDenumire(arg_of_Data[count]);
-                    medicament.setModAdministrare(arg_of_Data[count+1]);
-                    medicament.setProspect(arg_of_Data[count+2]);
-                    reteta.getListaMedicamente().put(medicament.getDenumire(),medicament);
-
-                    count+=3;
+                    medicament.setDenumire(medicamente[3*i]);
+                    medicament.setModAdministrare(medicamente[3*i+1]);
+                    medicament.setProspect(medicamente[3*i+2]);
+                    mapMedicamente.put(medicament.getDenumire(),medicament);
                 }
+                reteta.setListaMedicamente(mapMedicamente);
                 Retete.add(reteta);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Fisierul Reteta_DataBase.txt nu a fost gasit!!!");
+            System.out.println("Fisierul Reteta_DataBase.csv nu a fost gasit!!!");
             e.printStackTrace();
         }
 
     }
-
-
-
-
-
-
 
     //2) Afisare Client
     public static void afisareClient(Client x){
@@ -466,5 +480,15 @@ scriereReteta.close();
         }
 
         return (float)valoare/count;
+    }
+
+    //Serviciu de audit
+    public static void audit(String numeActiune)throws IOException
+    {
+        FileWriter scriereAudit = new FileWriter("Baza de date/audit.csv",true);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        scriereAudit.write(numeActiune + "," +formatter.format(date) + "\n");
+        scriereAudit.close();
     }
 }
