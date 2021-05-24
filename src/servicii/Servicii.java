@@ -117,7 +117,7 @@ scriereMedic.write(((Medic) x.getValue()).getCnp()
         +","+((Medic) x.getValue()).getSpecializare()
         +","+((Medic) x.getValue()).getAniExperienta()
         +","+((Medic) x.getValue()).getDataAngajarii().get(Calendar.DATE)
-        +","+((Medic) x.getValue()).getDataAngajarii().get(Calendar.MONTH)
+        +","+(((Medic) x.getValue()).getDataAngajarii().get(Calendar.MONTH)+1)
         +","+((Medic) x.getValue()).getDataAngajarii().get(Calendar.YEAR)+"\n");
 }
 scriereMedic.close();
@@ -138,7 +138,7 @@ FileWriter scriereProgramare = new FileWriter("Baza de date/ProgramareDB.csv");
 scriereProgramare.write("zi,luna,an,ora,minute,detaliiProgramare,recomandari,cnpClient,cnpMedic\n");
 for(Programare x:Programari)
 scriereProgramare.write(x.getData().get(Calendar.DATE) +","
-    + x.getData().get(Calendar.MONTH)
+    + (x.getData().get(Calendar.MONTH)+1)
     + "," + x.getData().get(Calendar.YEAR)
     + ","  + x.getData().get(Calendar.HOUR)
     + ","  + x.getData().get(Calendar.MINUTE)
@@ -468,7 +468,7 @@ scriereReteta.close();
     //9Afisare programari
     public static void afisareProgramare(Programare x) {
 
-        System.out.println("Data Programarii este: Ziua" + x.getData().get(Calendar.DATE) + " Luna "+ x.getData().get(Calendar.MONTH) + " Anul " + x.getData().get(Calendar.YEAR) + " Ora "  + x.getData().get(Calendar.HOUR) + " Minutul "  + x.getData().get(Calendar.MINUTE));
+        System.out.println("Data Programarii este: Ziua" + x.getData().get(Calendar.DATE) + " Luna "+ (x.getData().get(Calendar.MONTH)+1) + " Anul " + x.getData().get(Calendar.YEAR) + " Ora "  + x.getData().get(Calendar.HOUR) + " Minutul "  + x.getData().get(Calendar.MINUTE));
         System.out.println("Detalii Programare: " + x.getDetaliiProgramare());
         System.out.println("Recomandari: " + x.getRecomandari());
         System.out.println("CNP Client: " + x.getCnpClient());
@@ -530,6 +530,16 @@ scriereReteta.close();
         return calendar.getTimeInMillis();
     }
 
+    private static Calendar timeStampToCalendar(Timestamp date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+    private static long calendarToTimeStamp(Calendar calendar) {
+        return calendar.getTimeInMillis();
+    }
+
     //11 Citire din baza de date
     public static void citireDB(HashMap<String, Client> Clienti,
                                 HashMap<String, Medic> Medici,
@@ -561,7 +571,7 @@ scriereReteta.close();
             PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_PROGRAMARI);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Programare programari = new Programare(dateToCalendar(resultSet.getDate(2)), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
+                Programare programari = new Programare(timeStampToCalendar(resultSet.getTimestamp(2)), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
                 Programari.add(programari);
             }
         }catch (SQLException e) {
@@ -654,7 +664,7 @@ scriereReteta.close();
         ResultSet resultSet;
         try{
             PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(INSERT_NEW_PROGRAMARE, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setDate(1, new java.sql.Date(calendarToDate(programare.getData())));
+            preparedStatement.setTimestamp(1, new java.sql.Timestamp(calendarToTimeStamp(programare.getData())));
             preparedStatement.setString(2, programare.getDetaliiProgramare());
             preparedStatement.setString(3, programare.getRecomandari());
             preparedStatement.setString(4, programare.getCnpClient());
