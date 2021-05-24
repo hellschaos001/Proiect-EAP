@@ -758,7 +758,32 @@ scriereReteta.close();
             throw new RuntimeException("S-a detectat o problema la adaugarea medicului");
         }
     }
-
+    //Delete Client din BD
+    public static void deletePersoana(String cnp)
+    {
+        ResultSet resultSet;
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(DELETE_PERSOANA, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, cnp);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            throw new RuntimeException("S-a detectat o problema la stergerea unei persoane");
+        }
+    }
+    //Delete Programare din BD
+    public static void deleteProgramare(String cnp_c,String cnp_m)
+    {
+        ResultSet resultSet;
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(DELETE_PROGRAMARE, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, cnp_c);
+            preparedStatement.setString(2, cnp_m);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //Serviciu de audit
     public static void audit(String numeActiune)throws IOException

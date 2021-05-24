@@ -23,7 +23,6 @@ public class Queries {
 
     public static final String DELETE_PERSOANA = "DELETE FROM persoana WHERE CNP = ?";
     public static final String DELETE_CLIENT = "DELETE FROM client WHERE CNP_C = ?";
-    public static final String DELETE_ECHIPAMENT = "DELETE FROM echipament WHERE ID_Echipament = ?";
     public static final String DELETE_MEDIC = "DELETE FROM medic WHERE CNP_M = ?";
-    public static final String DELETE_PROGRAMARE ="DELETE FROM programare WHERE id_programare = ?";
+    public static final String DELETE_PROGRAMARE = "DELETE FROM programare WHERE cnp_c = ? and cnp_m = ?";
 }

@@ -1,2 +1,3 @@
 cnp,nume,prenume,adresa,telefon,asigurat,rezultatTestCOVID,salariat,boli,alergeni,grupaSange
 123,preda,alex,i.l.caragiale.,0735,true,true,true,multe,rau,a+
+5000,Preda,Alex,i.l.caragiale,0735,true,false,false,-,-,ab+

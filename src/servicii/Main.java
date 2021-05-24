@@ -31,11 +31,6 @@ public class Main {
         System.out.println("8.Adaugare programare");
         System.out.println("9.Afisare programare");
         System.out.println("10.Afisarea Valoarii Medie a echipamentelor");
-        System.out.println("11.Citire din  BD");
-        System.out.println("12.");
-        System.out.println("12.");
-        System.out.println("12.");
-        System.out.println("12.");
         System.out.println("0. Iesire");
     }
 
@@ -49,7 +44,8 @@ public class Main {
 
         Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
 
-
+        //Testare Servicii SDBC
+        Servicii.deleteProgramare("100", "200");
         Scanner scan = new Scanner(System.in);
         int optiune=0;
         do {
@@ -79,31 +75,30 @@ public class Main {
                 //modificare
                 System.out.println("Introduceti CNP:");
                 String identificatorCnp = scan.next();
-
-                Client a = Servicii.modificareClient();
-                Clienti.remove(identificatorCnp);
-                Clienti.put(a.getCnp(), a);
-                Servicii.updateClient(identificatorCnp,a);
-                Servicii.audit("Modificare clienti");
+                if(Clienti.containsKey(identificatorCnp))
+                {
+                    Client a = Servicii.modificareClient();
+                    Clienti.remove(identificatorCnp);
+                    Clienti.put(a.getCnp(), a);
+                    Servicii.updateClient(identificatorCnp, a);
+                    Servicii.audit("Modificare clienti");
+                }
+                else System.out.println("Nu exista un client cu acest CNP!!!");
 
             }
             if (optiune == 4)
             {
-                System.out.println("Introduceti numele:");
-                String Nume_Stergere = scan.next();
-                System.out.println("Introduceti prenumele:");
-                String Prenume_Stergere = scan.next();
+                System.out.println("Introduceti cnp:");
+                String cnp = scan.next();
 
-
-                for(Map.Entry y: Clienti.entrySet())
+                if(Clienti.containsKey(cnp))
                 {
-                    if(Prenume_Stergere.equals( ( (Client) y.getValue() ).getPrenume() ) && Nume_Stergere.equals( ((Client) y.getValue() ).getNume() ))
-                    {
-                        Clienti.remove(y.getKey());
-                        System.out.println("Client sters cu succes!");
-                    }
+                    Client a = Servicii.modificareClient();
+                    Clienti.remove(cnp);
+                    Servicii.deletePersoana(cnp);
+                    Servicii.audit("Stergere persoana");
                 }
-                Servicii.audit("client sters");
+                else System.out.println("Nu exista persoana cu acest CNP!!!");
             }
             if (optiune == 5)
             {
@@ -146,20 +141,10 @@ public class Main {
                 System.out.println("Valoarea Medie a echipamentelor este:" + Servicii.afisareValoareaMediaEchipamente(Echipamente));
                 Servicii.audit("valoare medie a echipamentelor");
             }
-            if(optiune == 11)
-            {
-                System.out.println("Actualizare informatii din  BD:\n");
-                Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
-            }
-
-
-
         }while(optiune!=0);
 
 
         Servicii.scriereBD(Clienti, Medici, Programari, Retete, Echipamente);
-
-
     }
 
 }
