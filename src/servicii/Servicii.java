@@ -171,7 +171,7 @@ scriereReteta.close();
                                   ArrayList<Reteta> Retete,
                                   ArrayList<Echipament> Echipamente){
 
-        try {
+        /*try {
             File fisier_client = new File("Baza de date/ClientDB.csv");
             Scanner myReader = new Scanner(fisier_client);
             if(myReader.hasNextLine())
@@ -272,7 +272,7 @@ scriereReteta.close();
         } catch (FileNotFoundException e) {
             System.out.println("Fisierul ProgramareDB.csv nu a fost gasit!!!");
             e.printStackTrace();
-        }
+        }*/
 
         try {
             File fisier_reteta = new File("Baza de date/RetetaDB.csv");
