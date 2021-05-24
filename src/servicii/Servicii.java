@@ -140,7 +140,7 @@ for(Programare x:Programari)
 scriereProgramare.write(x.getData().get(Calendar.DATE) +","
     + (x.getData().get(Calendar.MONTH)+1)
     + "," + x.getData().get(Calendar.YEAR)
-    + ","  + x.getData().get(Calendar.HOUR)
+    + ","  + x.getData().get(Calendar.HOUR_OF_DAY)
     + ","  + x.getData().get(Calendar.MINUTE)
     + ","  + x.getDetaliiProgramare()
     + ","  + x.getRecomandari()
@@ -468,7 +468,7 @@ scriereReteta.close();
     //9Afisare programari
     public static void afisareProgramare(Programare x) {
 
-        System.out.println("Data Programarii este: Ziua" + x.getData().get(Calendar.DATE) + " Luna "+ (x.getData().get(Calendar.MONTH)+1) + " Anul " + x.getData().get(Calendar.YEAR) + " Ora "  + x.getData().get(Calendar.HOUR) + " Minutul "  + x.getData().get(Calendar.MINUTE));
+        System.out.println("Data Programarii este: Ziua" + x.getData().get(Calendar.DATE) + " Luna "+ (x.getData().get(Calendar.MONTH)+1) + " Anul " + x.getData().get(Calendar.YEAR) + " Ora "  + x.getData().get(Calendar.HOUR_OF_DAY) + " Minutul "  + x.getData().get(Calendar.MINUTE));
         System.out.println("Detalii Programare: " + x.getDetaliiProgramare());
         System.out.println("Recomandari: " + x.getRecomandari());
         System.out.println("CNP Client: " + x.getCnpClient());
