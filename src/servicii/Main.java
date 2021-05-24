@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class Main {
     public static void menu(){
         System.out.println("Preda Alexandru-Florin /// Grupa 253 /// EAP");
@@ -145,6 +149,11 @@ public class Main {
                 System.out.println("Valoarea Medie a echipamentelor este:" + Servicii.afisareValoareaMediaEchipamente(Echipamente));
                 Servicii.audit("valoare medie a echipamentelor");
             }
+            if(optiune == 11)
+            {
+                System.out.println("chestii afisare din BD:\n");
+                Servicii.CreareTabelTest();
+            }
 
 
         }while(optiune!=0);
@@ -154,4 +163,5 @@ public class Main {
 
 
     }
+
 }

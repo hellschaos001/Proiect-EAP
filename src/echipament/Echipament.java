@@ -18,6 +18,8 @@ public class Echipament{
     }
 
     public Echipament(String numeProducator, String telefon, String numeEchipament, int anProductie, float pret) {
+        Producator prod = new Producator();
+        this.producator=prod;
         this.producator.setNumeProducator(numeProducator);
         this.producator.setTelefon(telefon);
         this.numeEchipament = numeEchipament;

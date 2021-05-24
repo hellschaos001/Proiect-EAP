@@ -7,15 +7,22 @@ import medicament.Medicament;
 import persoana.Programare;
 import medicament.Reteta;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.*; //Connection, Statement, ResultSet
 import java.util.*;//random,scaner,arraylist,HashMap,etc.
 import java.lang.*;//math.etc
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static servicii.Queries.*;
+
+
 public class Servicii {
+    private static DbConnection dbConnection = DbConnection.getInstance();
 
     //1)Adaugare Client
     public static Client adaugareClient() {
@@ -482,6 +489,97 @@ scriereReteta.close();
         return (float)valoare/count;
     }
 
+    //COMENZI APLICATE PE BAZA DE DATE
+    //11)Afisare echipament DB
+    public static void CreareTabelTest(){
+        try (
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root","ciscosecpa55");
+            Statement stmt = conn.createStatement();
+        ){
+            String strSelect = "SELECT * FROM echipament";
+            System.out.println("The SQL statement is: " + strSelect + "\n");
+            ResultSet rset = stmt.executeQuery(strSelect);
+
+            System.out.println("The records selected are:");
+            int rowCount = 0;
+
+            while(rset.next()) {
+                String numeEchipament = rset.getString("numeEchipament");
+                int anProductie = rset.getInt("anProductie");
+                int pret = rset.getInt("pret");
+                String numeProducator = rset.getString("numeProducator");
+                int telefon = rset.getInt("telefon");
+                int ID_Echipament = rset.getInt("ID_Echipament");
+
+                System.out.println(numeEchipament +","+ anProductie +","+ pret +","+ numeProducator +","+ telefon +","+ ID_Echipament +"\n");
+                ++rowCount;
+            }
+            System.out.println("Total number of records = " + rowCount);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    private static Calendar dateToCalendar(Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+    private static Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    //12 Citire din baza de date
+    public static void citirDB(HashMap<String, Client> Clienti,
+                               HashMap<String, Medic> Medici,
+                               ArrayList<Programare> Programari,
+                               ArrayList<Echipament> Echipamente){
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_CLIENTI);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Client client = new Client(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getBoolean(6),resultSet.getBoolean(7),resultSet.getBoolean(8),resultSet.getString(9),resultSet.getString(10),resultSet.getString(11) );
+                Clienti.put(resultSet.getString(1),client);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_MEDICI);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Medic medic = new Medic(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6),resultSet.getInt(7),dateToCalendar(resultSet.getDate(8)));
+                Medici.put(resultSet.getString(1),medic);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_PROGRAMARI);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Programare programari = new Programare(dateToCalendar(resultSet.getDate(2)), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
+                Programari.add(programari);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_ECHIPAMENTE);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Echipament echipament = new Echipament(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getInt(5),resultSet.getFloat(6));
+                Echipamente.add(echipament);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Serviciu de audit
     public static void audit(String numeActiune)throws IOException
     {
@@ -491,4 +589,6 @@ scriereReteta.close();
         scriereAudit.write(numeActiune + "," +formatter.format(date) + "\n");
         scriereAudit.close();
     }
+
 }
+
