@@ -1,14 +1,6 @@
 package echipament;
 
 public class Echipament{
-    public Producator getProducator() {
-        return producator;
-    }
-
-    public void setProducator(Producator producator) {
-        this.producator = producator;
-    }
-
     private Producator producator;
     private String numeEchipament;
     private int anProductie;
@@ -25,6 +17,14 @@ public class Echipament{
         this.numeEchipament = numeEchipament;
         this.anProductie = anProductie;
         this.pret = pret;
+    }
+
+    public Producator getProducator() {
+        return producator;
+    }
+
+    public void setProducator(Producator producator) {
+        this.producator = producator;
     }
 
     public String getNumeEchipament() {

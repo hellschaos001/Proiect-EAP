@@ -31,6 +31,11 @@ public class Main {
         System.out.println("8.Adaugare programare");
         System.out.println("9.Afisare programare");
         System.out.println("10.Afisarea Valoarii Medie a echipamentelor");
+        System.out.println("11.Citire din  BD");
+        System.out.println("12.");
+        System.out.println("12.");
+        System.out.println("12.");
+        System.out.println("12.");
         System.out.println("0. Iesire");
     }
 
@@ -43,7 +48,6 @@ public class Main {
         ArrayList<Echipament> Echipamente = new ArrayList<>();
 
         Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
-
 
 
         Scanner scan = new Scanner(System.in);
@@ -61,6 +65,7 @@ public class Main {
                 System.out.println("Client adaugat");
                 Servicii.audit("Adaugare client");
                 Servicii.audit("Client adaugat");
+                Servicii.adaugareClient(client);
             }
             if (optiune == 2)
             {
@@ -72,23 +77,15 @@ public class Main {
             if (optiune == 3)
             {
                 //modificare
-                System.out.println("Introduceti numele:");
-                String identificator_Nume = scan.next();
-                System.out.println("Introduceti prenumele:");
-                String identificator_Prenume = scan.next();
+                System.out.println("Introduceti CNP:");
+                String identificatorCnp = scan.next();
 
-
-                for(Map.Entry y: Clienti.entrySet())
-                {
-                    if(identificator_Prenume.equals( ( (Client) y.getValue() ).getPrenume() ) && identificator_Nume.equals( ((Client) y.getValue() ).getNume() ))
-                    {
-                        Client x = Servicii.modificareClient();
-                        Clienti.replace((String) y.getKey(),x);
-
-                        System.out.println("Client modificat cu succes!");
-                    }
-                }
+                Client a = Servicii.modificareClient();
+                Clienti.remove(identificatorCnp);
+                Clienti.put(a.getCnp(), a);
+                Servicii.updateClient(identificatorCnp,a);
                 Servicii.audit("Modificare clienti");
+
             }
             if (optiune == 4)
             {
@@ -151,9 +148,10 @@ public class Main {
             }
             if(optiune == 11)
             {
-                System.out.println("chestii afisare din BD:\n");
-                Servicii.CreareTabelTest();
+                System.out.println("Actualizare informatii din  BD:\n");
+                Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
             }
+
 
 
         }while(optiune!=0);
