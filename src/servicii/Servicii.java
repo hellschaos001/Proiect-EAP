@@ -80,11 +80,11 @@ public class Servicii {
     }
 
     //Scriere din fisere
-    public static void scriereBD(HashMap<String, Client> Clienti,
-                                 HashMap<String, Medic> Medici,
-                                 ArrayList<Programare> Programari,
-                                 ArrayList<Reteta> Retete,
-                                 ArrayList<Echipament> Echipamente) throws IOException {
+    public static void scriereCSV(HashMap<String, Client> Clienti,
+                                  HashMap<String, Medic> Medici,
+                                  ArrayList<Programare> Programari,
+                                  ArrayList<Reteta> Retete,
+                                  ArrayList<Echipament> Echipamente) throws IOException {
 
 FileWriter scriereClient = new FileWriter("Baza de date/ClientDB.csv");
 scriereClient.write("cnp,nume,prenume,adresa,telefon,asigurat,rezultatTestCOVID,salariat,boli,alergeni,grupaSange"+"\n");
@@ -165,11 +165,11 @@ scriereReteta.write(x.getDurata() + "," + str+"\n");
 scriereReteta.close();
 }
     //Citirea din fisiere
-    public static  void citireDB(HashMap<String, Client> Clienti,
-                                 HashMap<String, Medic> Medici,
-                                 ArrayList<Programare> Programari,
-                                 ArrayList<Reteta> Retete,
-                                 ArrayList<Echipament> Echipamente){
+    public static  void citireCSV(HashMap<String, Client> Clienti,
+                                  HashMap<String, Medic> Medici,
+                                  ArrayList<Programare> Programari,
+                                  ArrayList<Reteta> Retete,
+                                  ArrayList<Echipament> Echipamente){
 
         try {
             File fisier_client = new File("Baza de date/ClientDB.csv");
@@ -531,10 +531,10 @@ scriereReteta.close();
     }
 
     //11 Citire din baza de date
-    public static void citirDB(HashMap<String, Client> Clienti,
-                               HashMap<String, Medic> Medici,
-                               ArrayList<Programare> Programari,
-                               ArrayList<Echipament> Echipamente){
+    public static void citireDB(HashMap<String, Client> Clienti,
+                                HashMap<String, Medic> Medici,
+                                ArrayList<Programare> Programari,
+                                ArrayList<Echipament> Echipamente){
         try{
             PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(READ_CLIENTI);
             ResultSet resultSet = preparedStatement.executeQuery();

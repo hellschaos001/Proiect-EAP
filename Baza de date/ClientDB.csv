@@ -1,3 +1,6 @@
 cnp,nume,prenume,adresa,telefon,asigurat,rezultatTestCOVID,salariat,boli,alergeni,grupaSange
-123,preda,alex,i.l.caragiale.,0735,true,true,true,multe,rau,a+
-5000,Preda,Alex,i.l.caragiale,0735,true,false,false,-,-,ab+
+111,preda,alex,i.l.caragiale,11,true,false,true,-,-,a
+222,troy,alexandru,str.soarelui,22,true,false,true,-,-,b
+333,dyar,mert,str.lunii,33,false,true,false,-,-,ab
+444,ulmeanu,cristian,str.marte,44,true,true,true,-,-,a
+555,duta,andrei,str.pluto,55,true,true,true,-,-,ab

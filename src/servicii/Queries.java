@@ -7,7 +7,7 @@ public class Queries {
     public static final String READ_CLIENTI = "SELECT p.CNP, p.nume, p.prenume, p.adresa, p.telefon,c.asigurat,c.rezultatTestCOVID,c.salariat,c.boli,c.alergeni,c.grupaSange  FROM db.persoana p\n" +
             "join db.client c\n" +
             "on c.CNP_C = p.CNP;";
-    public static final String READ_MEDICI = "SELECT p.CNP, p.nume, p.prenume, p.adresa, p.telefon,m.specializare,m.aniExperienta,m.date  FROM db.persoana p\n" +
+    public static final String READ_MEDICI = "SELECT p.CNP, p.nume, p.prenume, p.adresa, p.telefon,m.specializare,m.aniExperienta,m.dataAngajarii  FROM db.persoana p\n" +
             "join db.medic m\n" +
             "on m.CNP_M = p.CNP;";
 

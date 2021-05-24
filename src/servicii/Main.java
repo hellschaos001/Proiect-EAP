@@ -12,10 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class Main {
     public static void menu(){
         System.out.println("Preda Alexandru-Florin /// Grupa 253 /// EAP");
@@ -42,8 +38,8 @@ public class Main {
         ArrayList<Reteta> Retete = new ArrayList<>();
         ArrayList<Echipament> Echipamente = new ArrayList<>();
 
-        Servicii.citireDB(Clienti, Medici, Programari, Retete, Echipamente);
-
+        Servicii.citireCSV(Clienti, Medici, Programari, Retete, Echipamente);
+        Servicii.citireDB(Clienti,Medici,Programari,Echipamente);
         //Testare Servicii SDBC
         Servicii.deleteProgramare("100", "200");
         Scanner scan = new Scanner(System.in);
@@ -126,6 +122,7 @@ public class Main {
 
                 Programare aux = Servicii.adaugareProgramare(cnp_client,cnp_medic);
                 Programari.add(aux);
+                Servicii.adaugareProgramare(aux);
                 Servicii.audit("adaugare programare");
             }
             if(optiune == 9)
@@ -144,7 +141,7 @@ public class Main {
         }while(optiune!=0);
 
 
-        Servicii.scriereBD(Clienti, Medici, Programari, Retete, Echipamente);
+        Servicii.scriereCSV(Clienti, Medici, Programari, Retete, Echipamente);
     }
 
 }
