@@ -22,8 +22,8 @@ Am creeat un sistem de programari pentru un cabinet medical.
 ---
 ### ETAPA 2
 
-*Serviciu de audit
-*Metodele pentru citire/afisare ale obiectelor  
+* Serviciu de audit
+* Metodele pentru citire/afisare ale obiectelor  
 ---
 ### ETAPA 3
 
