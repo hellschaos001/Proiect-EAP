@@ -29,7 +29,7 @@ Am creeat un sistem de programari pentru un cabinet medical.
 
 #### Diagrama conceptuala pentru serverul de baze de date:
 
-<img src="/images/interface1.jpg" width="800">
+<img src="/images/diagrama_conceptuala.png" width="800">
 
 Pentru crearea bazei de data am folosit MySQL.
 
