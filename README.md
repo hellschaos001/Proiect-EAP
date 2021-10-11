@@ -1,5 +1,5 @@
 # Programari Cabinet Medical
-##Proiect-Elemente Avansate de Programare
+## Proiect-Elemente Avansate de Programare
 
 
 Am creeat un sistem de programari pentru un cabinet medical.
